@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // let player = ["rock", "paper", "scissors"];
+      // let computer = ["rock", "paper", "scissors"];
+
+      // var count1 = Math.floor(Math.random() * 3);
+      // var count2 = Math.floor(Math.random() * 3);
+
+      // console.log("Player: ", player[count1]);
+      // console.log("Computer: ", computer[count2]);
+
+      //2 values - 'rock','scissors';
+
+      // if (player[count1] === computer[count2]) {
+      //   console.log("Its a tie");
+      // } else {
+      //   var output =
+      //     player[count1] === "paper" && computer[count2] === "scissors"
+      //       ? "Winner is Computer"
+      //       : "Winner is Player";
+      //   console.log(output);
+      // }
+
+      // var output =
+      //   player[count1] === computer[count2]
+      //     ? "Its a tie"
+      //     : player[count1] === "paper" && computer[count2] === "scissors"
+      //     ? "Winner is Computer"
+      //     : "Winner is Player";
+      // console.log(output);
+
+      // // 3 values - 'rock','paper', 'scissors';
+      // var output = 0;
+      // if (player[count1] === computer[count2]) {
+      //   console.log("Its a tie");
+      // } else if (player[count1] === "rock") {
+      //   switch (computer[count2]) {
+      //     case "paper": {
+      //       output = "Computer Wins";
+      //       break;
+      //     }
+      //     case "scissors":
+      //       output = "Player Wins";
+      //       break;
+      //     default:
+      //       output = "try correctly!";
+      //   }
+      //   console.log(output);
+      // } else if (player[count1] === "paper") {
+      //   switch (computer[count2]) {
+      //     case "rock": {
+      //       output = "Player Wins";
+      //       break;
+      //     }
+      //     case "scissors":
+      //       output = "Computer Wins";
+      //       break;
+      //     default:
+      //       output = "try correctly!";
+      //   }
+      //   console.log(output);
+      // } else if (player[count1] === "scissors") {
+      //   switch (computer[count2]) {
+      //     case "paper": {
+      //       output = "Player Wins";
+      //       break;
+      //     }
+      //     case "rock":
+      //       output = "Computer Wins";
+      //       break;
+      //     default:
+      //       output = "try correctly!";
+      //   }
+      //   console.log(output);
+      // } else {
+      //   console.log("CHECK THE PROGRAM");
+      // }
+
+      // var gameStartText = confirm('Game Name: "rock","paper","scissors" ');
+      // if(gameStartText)
+      // {
+      //     while(gameStartText)
+      //     {
+      //         var userInput = prompt('Please Enter "rock", "paper", "scissors" to play the game! ');
+      //         if(userInput)
+      //         {
+      //             let player = userInput.trim().toLowerCase();
+      //             if(player === 'rock' ||  player === 'paper' ||  player === 'scissors')
+      //             {
+      //                 var computerChoice = Math.floor(Math.random()*3);
+      //                 var computer = computerChoice === 1 ? "rock" : computerChoice === 2 ? "paper" : "scissors" ;
+      //                 var result = player === computer
+      //                         ? "Tie game!"
+      //                         : player === "rock" && computer === "paper"
+      //                         ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+      //                         : player === "paper" && computer === "scissors"
+      //                         ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+      //                         : player === "scissors" && computer === "rock"
+      //                         ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+      //                         : `playerOne: ${player}\nComputer: ${computer}\nplayerOne wins!`;
+      //                         alert(result);
+      //                 let playAgain = confirm("Play again?");
+      //                 playAgain ? location.reload() : alert("Ok Thanks!");
+      //                 continue;
+      //             }
+      //             else{
+      //                 alert("Didnt enter! Enter again")
+      //                 continue
+      //             }
+      //         }
+      //         else{
+      //             alert("Guess you changed your mind!")
+      //             break;
+      //         }
+      //     }
+      // }
+      // else{
+      //     alert("Thanks! Bye");
+      // }
+
+      const initGame = () => {
+        const startGame = confirm("Shall we Play a Game!");
+        startGame ? playGame() : alert("Ok Bye!");
+      };
+
+      const playGame = () => {
+        while (true) {
+          let playerChoice = getplayerChoice();
+          playerChoice = playerChoiceFormat(playerChoice);
+          if (playerChoice === "") {
+            invalidChoice();
+            continue;
+          }
+          if (!playerChoice) {
+            alert("Guess you changed your mind!");
+            break;
+          }
+          playerChoice = evaluatePlayerChoice(playerChoice);
+          if (!playerChoice) {
+            invalidChoice();
+            continue;
+          }
+          const computerChoice = getComputerChoice();
+          const result = determineWinner(playerChoice, computerChoice);
+          alert(result);
+          if (askToPlayAgain()) {
+            continue;
+          } else {
+            thanksForPlaying();
+            break;
+          }
+        }
+      };
+
+      //small functions(helpers)
+      function askToPlayAgain() {
+        return confirm("Play again");
+      }
+      function thanksForPlaying() {
+        return alert("Ok Thamks fofr Playing!");
+      }
+      function determineWinner(player, computer) {
+        const output =
+          player === computer
+            ? "Tie game!"
+            : player === "rock" && computer === "paper"
+            ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+            : player === "paper" && computer === "scissors"
+            ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+            : player === "scissors" && computer === "rock"
+            ? `playerOne: ${player}\nComputer: ${computer}\nComputer wins!`
+            : `playerOne: ${player}\nComputer: ${computer}\nplayerOne wins!`;
+        return output;
+      }
+
+      function getComputerChoice() {
+        const arrs = ["rock", "paper", "scissors"];
+        const random = Math.floor(Math.random() * 3);
+        return arrs[random];
+      }
+
+      function evaluatePlayerChoice(playerChoice) {
+        if (
+          playerChoice === "rock" ||
+          playerChoice === "paper" ||
+          playerChoice === "scissors"
+        ) {
+          return playerChoice;
+        } else {
+          return false;
+        }
+      }
+
+      function invalidChoice() {
+        alert("You didn't type correctly!");
+      }
+
+      function playerChoiceFormat(playerChoice) {
+        if (playerChoice || playerChoice === "") {
+          return playerChoice.trim().toLowerCase();
+        } else {
+          return false;
+        }
+      }
+      function getplayerChoice() {
+        return prompt('Enter "rock", "paper", "scissors" ');
+      }
+
+      initGame();
+    </script>
+  </body>
+</html>
